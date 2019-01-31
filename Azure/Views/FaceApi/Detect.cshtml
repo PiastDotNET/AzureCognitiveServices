@@ -1,0 +1,64 @@
+﻿@model Azure.Models.FaceApi
+
+@{
+    ViewBag.Title = "FaceApi";
+}
+
+<h2>FaceApi</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Face</h4>
+        <hr />
+        @Html.TextBoxFor(x => x.Url)
+        <input type="submit" value="Sprawdź" class="btn btn-default" />
+        <br/>
+        <div style="float:left">
+            @{
+                if (Model?.Faces?.Count > 0)
+                {
+                    <p>Liczba osob na zdjęciu: @Model.Faces.Count</p>
+                    <br />
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Wiek</th>
+                            <th scope="col">Płeć</th>
+                            <th scope="col">Złość</th>
+                            <th scope="col">Radość</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.Faces)
+                        {
+                            <tr>
+                                <td>@item.faceAttributes.age</td>
+                                <td>@item.faceAttributes.gender</td>
+                                <td>@item.faceAttributes.emotion.anger</td>
+                                <td>@item.faceAttributes.emotion.happiness</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            }
+        </div>
+        <div style="float: right">
+            @{
+                if (Model?.Url != null)
+                {
+                    <img src ="@Model.Url"/>
+                }
+            }
+        </div>
+
+    </div>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

@@ -1,0 +1,58 @@
+﻿@model Azure.Models.Image
+
+@{
+    ViewBag.Title = "Computer Vision";
+}
+
+<h2>FaceApi</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Computer Vision</h4>
+        <hr />
+        @Html.TextBoxFor(Model => Model.Url)
+        <input type="submit" value="Sprawdź" class="btn btn-default" />
+
+
+    </div>
+    <br/>
+    <div class="form-horizontal">
+        <div style="float: left">
+            @{
+
+                if (Model?.ComputerVision?.description != null)
+                {
+                    foreach (var item in Model.ComputerVision.description.captions)
+                    {
+                        <p>@item.text</p><br />
+                        <p>Pewność: @item.confidence</p>
+                    }
+                    <br />
+                    <p><b>Lista tagów:</b></p>
+                    foreach (var tag in @Model.ComputerVision.description.tags)
+                    {
+                        <p>@tag</p>
+                    }
+                }
+            }
+        </div>
+        <div style="float: right">
+            @{
+                if (Model?.ComputerVision?.description != null)
+                {
+                    <img src="@Model.Url" />
+                }
+            }
+
+        </div>
+    </div>
+    <br/>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
